@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/The_Viking_Village.unity
     guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Scenes/Main Menu.unity
+    guid: e4e3b9f136590394fafe3740f03b0e57
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
