@@ -1,18 +1,40 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Coin : MonoBehaviour
 {
-    public int coinValue = 1;
+    [SerializeField] private float rotationSpeed = 90f;
+    [SerializeField] private AudioClip pickupSfx;
+
+    private AudioSource audioSource;
+    private bool isCollected = false;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+        // Rotate the coin around the Y-axis
+        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // Check if the object entering the trigger has the "Player" tag
+        if (!isCollected && other.CompareTag("Player"))
         {
-            CoinCollector collector = other.GetComponent<CoinCollector>();
-            if (collector != null)
+            isCollected = true; // Prevent double pickup
+
+            if (pickupSfx != null && audioSource != null)
             {
-                collector.AddCoin(coinValue);
-                Destroy(gameObject); // Remove the coin
+                audioSource.PlayOneShot(pickupSfx);
+                Destroy(gameObject, pickupSfx.length); // Delay destruction
+            }
+            else
+            {
+                Destroy(gameObject); // No sound, destroy immediately
             }
         }
     }
